@@ -12,10 +12,10 @@ fmt.Println(cryptopals.StringToBinary("foo"))
 
 output: 011001100110111101101111
 */
-func StringToBinary(text string) (binaryString string) {
+func StringToBinary(text *string) (binaryString string) {
 
 	// For each char we convert to bin and append it
-	for _, rune := range text {
+	for _, rune := range *text {
 		binaryString = fmt.Sprintf("%s%.8b", binaryString, rune)
 	}
 	return
@@ -29,15 +29,15 @@ fmt.Println(cryptopals.HammingDistance("this is a test", wokka wokka!!!))
 
 output: 37
 */
-func HammingDistance(word1, word2 string) (hammingDistance int) {
-	if len(word1) != len(word2) {
+func HammingDistance(word1, word2 *string) (hammingDistance int) {
+	if len(*word1) != len(*word2) {
 		panic("Strings with different length")
 	}
 
 	// Evaluate equality for each bit pair and score for each
 	// different ones
-	for i := range word1 {
-		if word1[i] != word2[i] {
+	for i := range *word1 {
+		if (*word1)[i] != (*word2)[i] {
 			hammingDistance++
 		}
 	}
@@ -52,7 +52,7 @@ fmt.Println(cryptopals.KeySizeGuesser(yourText)
 
 output: 5
 */
-func KeySizeGuesser(text string) (bestGuess int) {
+func KeySizeGuesser(text *string) (bestGuess int) {
 	var (
 		word1, word2, word3, word4 string
 		smallDistance, normalized  float64
@@ -66,17 +66,17 @@ func KeySizeGuesser(text string) (bestGuess int) {
 	// by taking the average value from a few interations of
 	// haming distance
 	for i := 2; i <= 40; i++ {
-		word1 = text[0:i]
-		word2 = text[i : 2*i]
-		word3 = text[2*i : 3*i]
-		word4 = text[3*i : 4*i]
+		word1 = (*text)[0:i]
+		word2 = (*text)[i : 2*i]
+		word3 = (*text)[2*i : 3*i]
+		word4 = (*text)[3*i : 4*i]
 
-		currDist1 = float64(HammingDistance(word1, word2)) / float64(i)
-		currDist2 = float64(HammingDistance(word2, word3)) / float64(i)
-		currDist3 = float64(HammingDistance(word3, word4)) / float64(i)
-		currDist4 = float64(HammingDistance(word1, word3)) / float64(i)
-		currDist5 = float64(HammingDistance(word1, word4)) / float64(i)
-		currDist6 = float64(HammingDistance(word2, word4)) / float64(i)
+		currDist1 = float64(HammingDistance(&word1, &word2)) / float64(i)
+		currDist2 = float64(HammingDistance(&word2, &word3)) / float64(i)
+		currDist3 = float64(HammingDistance(&word3, &word4)) / float64(i)
+		currDist4 = float64(HammingDistance(&word1, &word3)) / float64(i)
+		currDist5 = float64(HammingDistance(&word1, &word4)) / float64(i)
+		currDist6 = float64(HammingDistance(&word2, &word4)) / float64(i)
 
 		normalized = (currDist1 + currDist2 + currDist3 + currDist4 + currDist5 + currDist6) / 6
 
@@ -100,7 +100,7 @@ fmt.Println(cryptopals.NTransposer(block, 2))
 
 output: [[0 0 2] [0 1 3]]
 */
-func NTransposer(block []byte, amount int) [][]byte {
+func NTransposer(block *[]byte, amount int) [][]byte {
 	transpostedBlock := make([][]byte, amount)
 
 	// We make each slice contain a new one
@@ -109,7 +109,7 @@ func NTransposer(block []byte, amount int) [][]byte {
 	}
 
 	//We start reindexing and reordering all blocks
-	for i, rune := range block {
+	for i, rune := range *block {
 		index := i % amount
 		transpostedBlock[index] = append(transpostedBlock[index], rune)
 	}

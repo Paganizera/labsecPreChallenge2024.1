@@ -6,10 +6,10 @@ import (
 )
 
 // Works for fastening file reading structures
-func ReadFile(path string) (fileLines []string) {
+func ReadFile(path *string) (fileLines []string) {
 
 	// Check is there's a valid path
-	file, ferr := os.Open(path)
+	file, ferr := os.Open(*path)
 	if ferr != nil {
 		panic(ferr)
 	}

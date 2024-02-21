@@ -15,7 +15,7 @@ fmt.Println(cryptopals.EvaluateWord("Hello World!"))
 
 output: 76.81
 */
-func EvaluateWord(word string) (totalsum float64) {
+func EvaluateWord(word *string) (totalsum float64) {
 
 	//Built according to <http://www.norvig.com/mayzner.html>
 	frequencyTable := map[rune]float64{
@@ -28,7 +28,7 @@ func EvaluateWord(word string) (totalsum float64) {
 
 	// For each char we sum its vallue from the table
 	// If the char isn't there, we sum 0 (default value)
-	for _, rune := range strings.ToLower(word) {
+	for _, rune := range strings.ToLower(*word) {
 		totalsum += frequencyTable[rune]
 	}
 	return
@@ -70,7 +70,7 @@ func XORSingleCharCracker(word string) (string, rune, float64) {
 		currKey = byte(i)
 		// XOR with the current key and analyze it's frequency
 		currWord = SingleCharXor([]byte(word), currKey)
-		currScore = EvaluateWord(currWord)
+		currScore = EvaluateWord(&currWord)
 		if currScore > highscoreValue {
 			highscoreValue = currScore
 			highscoreWord = currWord
